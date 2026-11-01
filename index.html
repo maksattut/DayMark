@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#17231f" />
+  <meta name="description" content="Личный ежедневный трекер привычек, целей, идей и продуктивности." />
+  <title>DAYMARK — личная система</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Главная навигация">
+      <a class="brand" href="#today" aria-label="DAYMARK — на главную">
+        <span class="brand-mark"><span></span><span></span><span></span></span>
+        <span class="brand-copy"><strong>DAYMARK</strong><small>PERSONAL SYSTEM</small></span>
+      </a>
+
+      <div class="side-label">РАБОЧЕЕ ПРОСТРАНСТВО</div>
+      <nav class="side-nav">
+        <button class="nav-item active" data-view="today"><span class="nav-icon">◫</span><span>Мой день</span><kbd>01</kbd></button>
+        <button class="nav-item" data-view="analytics"><span class="nav-icon">▥</span><span>Аналитика</span><kbd>02</kbd></button>
+        <button class="nav-item" data-view="ideas"><span class="nav-icon">✳</span><span>Банк идей</span><kbd>03</kbd></button>
+        <button class="nav-item" data-view="data"><span class="nav-icon">↗</span><span>Мои данные</span><kbd>04</kbd></button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="streak-card">
+          <div class="streak-top"><span class="streak-flame">✦</span><span>ТВОЙ РИТМ</span></div>
+          <div class="streak-number"><strong id="sidebar-streak">0</strong><span>дней подряд</span></div>
+          <div class="streak-caption">Каждый день — вклад в большую цель.</div>
+        </div>
+        <div class="sidebar-footer"><span class="status-dot"></span> Личные данные на этом устройстве</div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-context"><span class="context-dot"></span><span>ЛИЧНАЯ СИСТЕМА</span><span class="context-divider">/</span><span id="topbar-section">МОЙ ДЕНЬ</span></div>
+        <div class="topbar-actions">
+          <button class="icon-button" id="theme-toggle" type="button" aria-label="Переключить тему" title="Переключить тему"><span id="theme-icon">☾</span></button>
+          <button class="topbar-export" type="button" data-action="export-json"><span>↓</span> Резервная копия</button>
+          <div class="avatar" aria-label="Личный профиль">M</div>
+        </div>
+      </header>
+
+      <section class="view active" id="view-today">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow" id="today-eyebrow">ВОСКРЕСЕНЬЕ, 1 НОЯБРЯ</p>
+            <h1>День под <span>контролем.</span></h1>
+            <p class="page-subtitle">Небольшие действия каждый день создают большой результат.</p>
+          </div>
+          <div class="date-switcher">
+            <button class="date-arrow" id="prev-day" type="button" aria-label="Предыдущий день">‹</button>
+            <label class="date-current"><span>ВЫБРАННАЯ ДАТА</span><input type="date" id="selected-date" aria-label="Выбрать дату" /></label>
+            <button class="date-arrow" id="next-day" type="button" aria-label="Следующий день">›</button>
+            <button class="today-button" id="go-today" type="button">Сегодня</button>
+          </div>
+        </div>
+
+        <div class="overview-grid">
+          <article class="overview-card progress-overview">
+            <div class="overview-copy">
+              <div class="card-overline">ЕЖЕДНЕВНЫЙ РЕЗУЛЬТАТ</div>
+              <div class="progress-count"><strong id="done-count">0</strong><span>/ 7 привычек</span></div>
+              <p id="progress-message">Начни с одного выполненного действия.</p>
+              <div class="progress-track"><span id="progress-track-fill"></span></div>
+              <div class="progress-foot"><span id="progress-percent">0% выполнено</span><span>Цель — 100%</span></div>
+            </div>
+            <div class="progress-ring" id="progress-ring" role="img" aria-label="Выполнение дня: 0 процентов"><div><strong id="ring-percent">0%</strong><span>ГОТОВО</span></div></div>
+          </article>
+          <article class="overview-card mini-stat-card">
+            <div class="mini-stat-head"><span class="stat-icon green">✦</span><span class="card-overline">АКТИВНЫЕ ДНИ</span></div>
+            <strong class="mini-stat-value" id="active-streak">0 <small>дней</small></strong>
+            <p>Текущая серия дней с активностью</p>
+            <div class="stat-sparkline" id="streak-sparkline" aria-hidden="true"></div>
+          </article>
+          <article class="overview-card mini-stat-card">
+            <div class="mini-stat-head"><span class="stat-icon violet">↗</span><span class="card-overline">СРЕДНИЙ РЕЗУЛЬТАТ</span></div>
+            <strong class="mini-stat-value" id="week-average">0<small>%</small></strong>
+            <p>Среднее выполнение за 7 дней</p>
+            <div class="week-mini-bars" id="week-mini-bars" aria-hidden="true"></div>
+          </article>
+        </div>
+
+        <div class="section-heading">
+          <div><p class="eyebrow">ТВОЙ ПЛАН</p><h2>Ежедневные действия <span class="section-counter" id="section-counter">0 из 7</span></h2></div>
+          <div class="section-meta"><span class="live-dot"></span> Прогресс сохраняется автоматически</div>
+        </div>
+
+        <div class="habits-grid" id="habits-grid">
+          <article class="habit-card" data-habit-card="wake">
+            <div class="habit-head"><div class="habit-title-wrap"><span class="habit-number">01</span><div><h3>Подъём в 7:00</h3><p>Начни день по своему плану</p></div></div><span class="habit-status" data-status="wake">ОЖИДАЕТ</span></div>
+            <div class="habit-body wake-body"><div class="field-block"><label for="wake-time">Фактическое время подъёма</label><input id="wake-time" class="field-input" type="time" data-field="wake.time" /></div><div class="wake-target"><span>ЦЕЛЬ</span><strong>07:00</strong></div></div>
+            <div class="habit-footer"><span class="metric-caption" id="wake-metric">Запиши время и отметь выполнение</span><button class="complete-button" type="button" data-action="toggle-wake"><span>✓</span><b id="wake-button-label">Отметить</b></button></div>
+          </article>
+
+          <article class="habit-card" data-habit-card="pushups">
+            <div class="habit-head"><div class="habit-title-wrap"><span class="habit-number">02</span><div><h3>100 отжиманий</h3><p>Набирай объём подходами</p></div></div><span class="habit-status" data-status="pushups">ОЖИДАЕТ</span></div>
+            <div class="pushup-progress"><div><strong id="pushup-total">0</strong><span> / 100 повторений</span></div><span id="pushup-percent">0%</span></div>
+            <div class="mini-track"><span id="pushup-fill"></span></div>
+            <div class="set-entry"><input class="field-input" id="pushup-entry" type="number" min="1" max="500" inputmode="numeric" placeholder="Повторения" aria-label="Количество повторений в подходе" /><button class="small-add-button" type="button" data-action="add-set">+ Подход</button></div>
+            <div class="set-list" id="set-list"><span class="empty-inline">Подходы появятся здесь</span></div>
+            <div class="habit-footer"><span class="metric-caption">Сумма всех подходов за день</span><span class="target-pill">Цель: 100</span></div>
+          </article>
+
+          <article class="habit-card" data-habit-card="reading">
+            <div class="habit-head"><div class="habit-title-wrap"><span class="habit-number">03</span><div><h3>Чтение</h3><p>Время для знаний и концентрации</p></div></div><span class="habit-status" data-status="reading">ОЖИДАЕТ</span></div>
+            <div class="metric-input-row"><div class="field-block"><label for="reading-minutes">Минуты чтения</label><div class="input-with-unit"><input id="reading-minutes" class="field-input" type="number" min="0" max="1440" inputmode="numeric" placeholder="0" data-field="reading.minutes" /><span>мин</span></div></div><div class="metric-goal"><strong id="reading-time-label">0 / 60</strong><span>минут до цели</span></div></div>
+            <div class="mini-track"><span id="reading-fill"></span></div>
+            <div class="field-block compact-field"><label for="reading-title">Книга / материал</label><input id="reading-title" class="field-input" type="text" placeholder="Название книги или статьи" data-field="reading.title" /></div>
+            <div class="two-fields"><div class="field-block"><label for="reading-pages">Страниц</label><input id="reading-pages" class="field-input" type="number" min="0" placeholder="0" data-field="reading.pages" /></div><div class="field-block"><label for="reading-note">Заметка</label><input id="reading-note" class="field-input" type="text" placeholder="Что запомнилось?" data-field="reading.note" /></div></div>
+            <div class="habit-footer"><span class="metric-caption">Минимум 1 час · идеально 1–2 часа</span><span class="target-pill">60–120 мин</span></div>
+          </article>
+
+          <article class="habit-card" data-habit-card="course">
+            <div class="habit-head"><div class="habit-title-wrap"><span class="habit-number">04</span><div><h3>Новый курс</h3><p>Каждый день осваивай новое</p></div></div><span class="habit-status" data-status="course">ОЖИДАЕТ</span></div>
+            <div class="metric-input-row"><div class="field-block"><label for="course-minutes">Время обучения</label><div class="input-with-unit"><input id="course-minutes" class="field-input" type="number" min="0" max="1440" inputmode="numeric" placeholder="0" data-field="course.minutes" /><span>мин</span></div></div><div class="metric-goal"><strong id="course-time-label">0 / 60</strong><span>минут до цели</span></div></div>
+            <div class="mini-track"><span id="course-fill"></span></div>
+            <div class="field-block compact-field"><label for="course-name">Название курса</label><input id="course-name" class="field-input" type="text" placeholder="Какой курс проходишь?" data-field="course.name" /></div>
+            <div class="field-block compact-field"><label for="course-topic">Урок / тема дня</label><input id="course-topic" class="field-input" type="text" placeholder="Что изучил сегодня?" data-field="course.topic" /></div>
+            <div class="habit-footer"><span class="metric-caption">Цель — минимум 1 час обучения</span><span class="target-pill">60 мин</span></div>
+          </article>
+
+          <article class="habit-card task-card" data-habit-card="work">
+            <div class="habit-head"><div class="habit-title-wrap"><span class="habit-number">05</span><div><h3>Рабочий план</h3><p>Главные результаты рабочего дня</p></div></div><span class="habit-status" data-status="work">ОЖИДАЕТ</span></div>
+            <div class="work-metrics"><div class="field-block"><label for="work-minutes">Время работы</label><div class="input-with-unit"><input id="work-minutes" class="field-input" type="number" min="0" max="1440" placeholder="0" data-field="work.minutes" /><span>мин</span></div></div><div class="task-progress"><strong id="work-task-count">0/0</strong><span>задач завершено</span></div></div>
+            <div class="task-list" id="work-task-list"><div class="empty-task">Добавь 1–3 главных результата на сегодня.</div></div>
+            <div class="task-entry"><input class="field-input" id="work-task-entry" type="text" maxlength="120" placeholder="Добавить рабочую задачу…" /><button class="small-add-button" type="button" data-action="add-task" data-kind="work">+ Добавить</button></div>
+            <div class="field-block note-field"><label for="work-note">Итог / заметка дня</label><textarea id="work-note" class="field-input field-textarea" rows="2" placeholder="Что важно зафиксировать?" data-field="work.note"></textarea></div>
+            <div class="habit-footer"><span class="metric-caption">Отметь каждую задачу по завершении</span><span class="target-pill" id="work-target-pill">0 задач</span></div>
+          </article>
+
+          <article class="habit-card task-card" data-habit-card="home">
+            <div class="habit-head"><div class="habit-title-wrap"><span class="habit-number">06</span><div><h3>Домашние дела</h3><p>Порядок вокруг — порядок в голове</p></div></div><span class="habit-status" data-status="home">ОЖИДАЕТ</span></div>
+            <div class="task-progress home-task-progress"><strong id="home-task-count">0/0</strong><span>дел выполнено</span></div>
+            <div class="task-list" id="home-task-list"><div class="empty-task">Запиши бытовые дела, которые нужно закрыть.</div></div>
+            <div class="task-entry"><input class="field-input" id="home-task-entry" type="text" maxlength="120" placeholder="Добавить домашнее дело…" /><button class="small-add-button" type="button" data-action="add-task" data-kind="home">+ Добавить</button></div>
+            <div class="field-block note-field"><label for="home-note">Дополнительная заметка</label><textarea id="home-note" class="field-input field-textarea" rows="2" placeholder="Покупки, бытовые вопросы…" data-field="home.note"></textarea></div>
+            <div class="habit-footer"><span class="metric-caption">Все дела отмечены — пункт выполнен</span><span class="target-pill" id="home-target-pill">0 дел</span></div>
+          </article>
+
+          <article class="habit-card ideas-card" data-habit-card="ideas">
+            <div class="habit-head"><div class="habit-title-wrap"><span class="habit-number">07</span><div><h3>Запись идей</h3><p>Не теряй мысли — фиксируй сразу</p></div></div><span class="habit-status" data-status="ideas">ОЖИДАЕТ</span></div>
+            <div class="ideas-count"><strong id="ideas-count">0</strong><span>идей за день</span><span class="ideas-hint">Минимум одна мысль</span></div>
+            <div class="idea-entry"><textarea class="field-input field-textarea" id="idea-entry" rows="2" maxlength="500" placeholder="Идея, наблюдение или мысль…"></textarea><button class="small-add-button" type="button" data-action="add-idea">Сохранить идею <span>↗</span></button></div>
+            <div class="idea-list" id="today-idea-list"><span class="empty-inline">Здесь будут твои сегодняшние идеи</span></div>
+            <div class="habit-footer"><span class="metric-caption">Идеи сохраняются в общем банке</span><button class="text-link-button" type="button" data-go-view="ideas">Открыть банк идей ↗</button></div>
+          </article>
+        </div>
+
+        <div class="daily-quote"><span class="quote-mark">“</span><p>Не нужно быть идеальным каждый день. Нужно возвращаться к тому, что для тебя важно.</p><span class="quote-caption">YOUR DAILY SYSTEM</span></div>
+      </section>
+
+      <section class="view" id="view-analytics">
+        <div class="page-heading simple-heading"><div><p class="eyebrow">ДАННЫЕ И ДИНАМИКА</p><h1>Твой прогресс <span>в цифрах.</span></h1><p class="page-subtitle">Смотри на тенденции, замечай закономерности и усиливай то, что работает.</p></div><div class="range-select-wrap"><label for="analytics-range">ПЕРИОД</label><select id="analytics-range" class="field-input"><option value="7">Последние 7 дней</option><option value="30" selected>Последние 30 дней</option><option value="90">Последние 90 дней</option></select></div></div>
+        <div class="analytics-kpis" id="analytics-kpis"></div>
+        <div class="analytics-panels">
+          <article class="panel chart-panel"><div class="panel-heading"><div><p class="eyebrow">ПОСЛЕДОВАТЕЛЬНОСТЬ</p><h2>Результат по дням</h2></div><span class="chart-legend"><i></i> Выполнено</span></div><div class="activity-chart" id="activity-chart"></div><div class="chart-foot"><span>Каждый столбец — один день</span><span id="chart-period-label">30 дней</span></div></article>
+          <article class="panel consistency-panel"><div class="panel-heading"><div><p class="eyebrow">СИЛЬНЫЕ СТОРОНЫ</p><h2>Стабильность привычек</h2></div></div><div id="habit-consistency"></div></article>
+        </div>
+        <article class="panel metrics-detail-panel"><div class="panel-heading"><div><p class="eyebrow">ДЕТАЛЬНЫЙ РАЗБОР</p><h2>Твои метрики</h2></div><span class="panel-subtext">Доля дней, когда цель была достигнута</span></div><div class="metrics-table-wrap"><table class="metrics-table"><thead><tr><th>ПОКАЗАТЕЛЬ</th><th>ЦЕЛЬ ДОСТИГНУТА</th><th>СРЕДНЕЕ ЗА ДЕНЬ</th><th>ЛУЧШИЙ РЕЗУЛЬТАТ</th></tr></thead><tbody id="metrics-table-body"></tbody></table></div></article>
+      </section>
+
+      <section class="view" id="view-ideas">
+        <div class="page-heading simple-heading"><div><p class="eyebrow">МЫСЛИ, КОТОРЫЕ СТОИТ СОХРАНИТЬ</p><h1>Банк <span>идей.</span></h1><p class="page-subtitle">Все идеи из ежедневных записей собраны в одном месте.</p></div><div class="ideas-total-card"><strong id="all-ideas-total">0</strong><span>сохранено идей</span></div></div>
+        <div class="ideas-toolbar"><div class="search-box"><span>⌕</span><input id="idea-search" type="search" placeholder="Поиск по идеям…" aria-label="Поиск по идеям" /></div><select id="idea-sort" class="field-input"><option value="newest">Сначала новые</option><option value="oldest">Сначала старые</option></select></div>
+        <div class="all-ideas-list" id="all-ideas-list"></div>
+      </section>
+
+      <section class="view" id="view-data">
+        <div class="page-heading simple-heading"><div><p class="eyebrow">УПРАВЛЕНИЕ ИНФОРМАЦИЕЙ</p><h1>Твои данные. <span>Твои правила.</span></h1><p class="page-subtitle">Записи хранятся локально в браузере. Делай резервные копии, чтобы не потерять историю.</p></div></div>
+        <div class="data-grid">
+          <article class="panel data-panel"><div class="data-panel-icon">↓</div><p class="eyebrow">РЕЗЕРВНАЯ КОПИЯ</p><h2>Экспортировать данные</h2><p>Скачай полную копию ежедневных отметок, подходов, задач, учебных записей и идей в формате JSON.</p><button class="primary-button" type="button" data-action="export-json">Скачать резервную копию <span>↗</span></button></article>
+          <article class="panel data-panel"><div class="data-panel-icon">⇧</div><p class="eyebrow">ВОССТАНОВЛЕНИЕ</p><h2>Импортировать данные</h2><p>Загрузи ранее сохранённый файл DAYMARK. Текущие записи будут объединены с резервной копией.</p><label class="secondary-button file-button" for="import-file">Выбрать JSON-файл <span>↗</span></label><input type="file" id="import-file" accept=".json,application/json" hidden /></article>
+          <article class="panel data-panel"><div class="data-panel-icon">▤</div><p class="eyebrow">ТАБЛИЧНЫЙ ФОРМАТ</p><h2>Выгрузить CSV</h2><p>Скачай сводную таблицу с результатами по каждому дню. Файл подготовлен для Excel и Google Sheets.</p><button class="secondary-button" type="button" data-action="export-csv">Скачать таблицу CSV <span>↗</span></button></article>
+          <article class="panel data-panel privacy-panel"><div class="data-panel-icon">⌂</div><p class="eyebrow">КОНФИДЕНЦИАЛЬНОСТЬ</p><h2>Где хранятся записи?</h2><p>Сервис не отправляет данные на сервер. Они остаются в хранилище браузера на конкретном устройстве. Для использования на другом устройстве импортируй резервную копию.</p><div class="privacy-note"><span class="status-dot"></span> Локальное хранение · без регистрации</div></article>
+        </div>
+        <article class="panel danger-zone"><div><p class="eyebrow">ОСТОРОЖНО</p><h2>Очистить все данные</h2><p>Удалит всю историю, задачи и идеи из этого браузера. Перед очисткой рекомендуется скачать резервную копию.</p></div><button class="danger-button" type="button" data-action="clear-data">Очистить историю</button></article>
+      </section>
+
+      <footer class="app-footer"><span>DAYMARK <i>·</i> BUILD YOUR EVERYDAY</span><span id="footer-storage">Локальное сохранение включено</span></footer>
+    </main>
+  </div>
+
+  <nav class="mobile-nav" aria-label="Мобильная навигация">
+    <button class="mobile-nav-item active" data-view="today"><span>◫</span><small>День</small></button>
+    <button class="mobile-nav-item" data-view="analytics"><span>▥</span><small>Аналитика</small></button>
+    <button class="mobile-nav-item" data-view="ideas"><span>✳</span><small>Идеи</small></button>
+    <button class="mobile-nav-item" data-view="data"><span>↗</span><small>Данные</small></button>
+  </nav>
+
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+  <script src="app.js"></script>
+</body>
+</html>
